@@ -10,7 +10,8 @@ export function activate() {
         if (supportedDiagramTypes.includes(lang.toLowerCase())) {
           const encodedDiagram = encodeDiagram(code);
           return `<img src="${config.get(
-            "url"
+            "url",
+            "https://kroki.io"
           )}/${lang}/svg/${encodedDiagram}">`;
         }
         return highlight(code, lang);
