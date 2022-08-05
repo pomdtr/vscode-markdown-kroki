@@ -5,16 +5,16 @@ export function activate() {
   return {
     extendMarkdownIt(md) {
       const config = workspace.getConfiguration("markdown-kroki");
-      const highlight = md.options.highlight;
-      md.options.highlight = (code: string, lang: string) => {
-        if (supportedDiagramTypes.includes(lang.toLowerCase())) {
-          const encodedDiagram = encodeDiagram(code);
-          return `<img src="${config.get(
-            "url",
-            "https://kroki.io"
-          )}/${lang}/svg/${encodedDiagram}">`;
+      const fence = md.renderer.rules.fence.bind(md.renderer.rules);
+      md.renderer.rules.fence = (tokens, idx, options, env, slf) => {
+        const token = tokens[idx];
+        if (supportedDiagramTypes.includes(token.info.toLowerCase())) {
+          const encodedDiagram = encodeDiagram(token.content.trim());
+          return `<p><img src="${config.get("url", "https://kroki.io")}/${
+            token.info
+          }/svg/${encodedDiagram}"></p>`;
         }
-        return highlight(code, lang);
+        return fence(tokens, idx, options, env, slf);
       };
       return md;
     },
