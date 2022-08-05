@@ -1,17 +1,14 @@
-# Markdown Preview Mermaid Support
+# Markdown Kroki
 
-[![](https://vsmarketplacebadge.apphb.com/version/bierner.markdown-mermaid.svg)](https://marketplace.visualstudio.com/items?itemName=bierner.markdown-mermaid)
+Adds Kroki diagram support to VS Code's builtin markdown preview
 
-Adds Mermaid diagram and flowchart support to VS Code's builtin markdown preview
-
-![A mermaid diagram in VS Code's built-in markdown preview](https://github.com/mjbvz/vscode-markdown-mermaid/raw/master/docs/example.png)
-
+![A mermaid diagram in VS Code's built-in markdown preview](https://github.com/pomdtr/vscode-markdown-kroki/raw/master/docs/example.png)
 
 ## Usage
 
-Create diagrams in markdown using `mermaid` fenced code blocks:
+Create diagrams in markdown using fenced code blocks:
 
-~~~markdown
+````markdown
 ```mermaid
 graph TD;
     A-->B;
@@ -19,41 +16,31 @@ graph TD;
     B-->D;
     C-->D;
 ```
-~~~
+````
 
-You can also use `:::` blocks:
+Supported formats:
 
-```markdown
-::: mermaid
-graph TD;
-    A-->B;
-    A-->C;
-    B-->D;
-    C-->D;
-:::
-```
-
-## Mermaid
-
-Currently supports Mermaid version 9.1.3.
-
-## Add custom CSS support
-
-You can use the built-in functionality to add custom CSS. More info can be found in the [markdown.styles documentation](https://code.visualstudio.com/Docs/languages/markdown#_using-your-own-css)
-
-For example, add Font Awesome like this:
-
-```
-"markdown.styles": [
-    "https://use.fontawesome.com/releases/v5.7.1/css/all.css"
-]
-```
-
-Use it like this:
-
-~~~markdown
-```mermaid
-graph LR
-    fa:fa-check-->fa:fa-coffee
-```
-~~~
+- actdiag
+- blockdiag
+- bpmn
+- bytefield
+- c4plantuml
+- diagramsnet
+- ditaa
+- erd
+- excalidraw
+- graphviz
+- mermaid
+- nomnoml
+- nwdiag
+- packetdiag
+- pikchr
+- plantuml
+- rackdiag
+- seqdiag
+- structurizr
+- svgbob
+- umlet
+- vega
+- vegalite
+- wavedrom
