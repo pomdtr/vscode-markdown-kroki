@@ -2,7 +2,7 @@
   "name": "markdown-kroki",
   "version": "1.0.0",
   "displayName": "Markdown Kroki",
-  "description": "Adds Kroki diagram and flowchart support to VS Code's builtin markdown preview",
+  "description": "Adds Kroki diagram support to VS Code's builtin markdown preview",
   "icon": "resources/logo.png",
   "keywords": [
     "kroki",
