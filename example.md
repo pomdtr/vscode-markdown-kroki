@@ -1,4 +1,4 @@
-# Test
+# Example
 
 ```blockdiag
 blockdiag {
