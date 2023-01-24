@@ -28,6 +28,7 @@ Supported formats:
 - bpmn
 - bytefield
 - c4plantuml
+- dbml
 - diagramsnet
 - ditaa
 - erd
