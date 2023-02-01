@@ -36,6 +36,7 @@ const supportedDiagramTypes = [
   "bpmn",
   "bytefield",
   "c4plantuml",
+  "d2",
   "dbml",
   "diagramsnet",
   "ditaa",
