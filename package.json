@@ -49,7 +49,6 @@
   },
   "activationEvents": [],
   "main": "./dist/index.js",
-  "browser": "./dist/web/index.js",
   "categories": [
     "Other"
   ],
@@ -57,10 +56,15 @@
     "configuration": {
       "title": "markdown-kroki",
       "properties": {
-        "url": {
+        "markdown-kroki.url": {
           "type": "string",
           "description": "The URL of the Kroki server",
           "default": "https://kroki.io"
+        },
+        "markdown-kroki.prefix": {
+          "type": "string",
+          "description": "The prefix to add in front of the diagram type name, eg \"kroki-\"",
+          "default": ""
         }
       }
     },
