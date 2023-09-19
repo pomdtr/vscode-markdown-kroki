@@ -34,7 +34,8 @@
     "umlet",
     "vega",
     "vegalite",
-    "wavedrom"
+    "wavedrom",
+    "wireviz"
   ],
   "publisher": "pomdtr",
   "license": "MIT",
