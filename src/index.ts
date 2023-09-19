@@ -70,4 +70,5 @@ const supportedDiagramTypes = [
   "vega",
   "vegalite",
   "wavedrom",
+  "wireviz",
 ];
