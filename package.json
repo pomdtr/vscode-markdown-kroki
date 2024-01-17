@@ -71,7 +71,8 @@
     "markdown.markdownItPlugins": true
   },
   "dependencies": {
-    "pako": "^2.0.4"
+    "pako": "^2.0.4",
+    "node-fetch": "^3.3.2"
   },
   "devDependencies": {
     "@types/vscode": "^1.69.1",
