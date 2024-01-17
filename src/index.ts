@@ -3,24 +3,21 @@ import { workspace } from "vscode";
 import * as vscode from 'vscode';
 import fetch from "node-fetch";
 
+const config = workspace.getConfiguration("markdown-kroki");
+
 export function activate() {
   let channel = vscode.window.createOutputChannel("markdown-kroki");
 
-  const config = workspace.getConfiguration("markdown-kroki");
   let url = config.get<string>("url", "https://kroki.io");
-
   let supportedDiagramTypes = staticSupportedDiagramTypes;
 
   // Listen for configuration changes
   vscode.workspace.onDidChangeConfiguration((event) => {
     if (event.affectsConfiguration("markdown-kroki")) {
-      const config = workspace.getConfiguration("markdown-kroki");
-
       // The setting has been changed, update it
-      let newUrl = config.get<string>("url", "https://kroki.io");
-      channel.appendLine(`URL updated: ${newUrl}`);
-
-      getSupportedDiagramTypes(newUrl, channel).then(function (data: string[]) {
+      url = config.get<string>("url", "https://kroki.io");
+      channel.appendLine(`URL updated: ${url}`);
+      getSupportedDiagramTypes(url, channel).then(function (data: string[]) {
         supportedDiagramTypes = data;
       });
     }
