@@ -1,30 +1,40 @@
 import pako from "pako";
 import { workspace } from "vscode";
-import * as vscode from 'vscode';
+import * as vscode from "vscode";
 import fetch from "node-fetch";
 
 const config = workspace.getConfiguration("markdown-kroki");
 
-export function activate() {
+export async function activate() {
   let channel = vscode.window.createOutputChannel("markdown-kroki");
 
   let url = config.get<string>("url", "https://kroki.io");
-  let supportedDiagramTypes = staticSupportedDiagramTypes;
+
+  let supportedDiagramTypes: string[];
+
+  try {
+    supportedDiagramTypes = await fetchDiagramTypes(url);
+  } catch (error) {
+    channel.appendLine(`Failed to get supported diagram types from ${url}`);
+    channel.appendLine(error.message);
+    return;
+  }
 
   // Listen for configuration changes
-  vscode.workspace.onDidChangeConfiguration((event) => {
+  vscode.workspace.onDidChangeConfiguration(async (event) => {
     if (event.affectsConfiguration("markdown-kroki")) {
       // The setting has been changed, update it
       url = config.get<string>("url", "https://kroki.io");
-      channel.appendLine(`URL updated: ${url}`);
-      getSupportedDiagramTypes(url, channel).then(function (data: string[]) {
-        supportedDiagramTypes = data;
-      });
+      try {
+        supportedDiagramTypes = await fetchDiagramTypes(url);
+      } catch (error) {
+        channel.appendLine(
+          `Failed to get supported diagram types from ${url}`,
+        );
+        channel.appendLine(error.message);
+        return;
+      }
     }
-  });
-
-  getSupportedDiagramTypes(url, channel).then(function (data: string[]) {
-    supportedDiagramTypes = data;
   });
 
   return {
@@ -51,7 +61,7 @@ export function activate() {
           return `<p><img src="${url}/${diagramType}/svg/${encodedDiagram}"></p>`;
         } else {
           channel.appendLine(
-            "Skipping fence " + diagramType + ". Unknown type"
+            "Skipping fence " + diagramType + ". Unknown type",
           );
         }
         return fence(tokens, idx, options, env, slf);
@@ -61,31 +71,18 @@ export function activate() {
   };
 }
 
-async function getSupportedDiagramTypes(
+async function fetchDiagramTypes(
   url: string,
-  channel: vscode.OutputChannel
 ): Promise<string[]> {
-  let supportedDiagramTypes = staticSupportedDiagramTypes;
-
-  let data;
-  const healthURL = `${url}/v1/health`;
-  channel.appendLine("Fetching known types from " + healthURL);
-
-  const response = await fetch(healthURL);
+  const response = await fetch(`${url}/v1/health`);
   if (!response.ok) {
-    channel.appendLine(
-      "Error fetching supported document types, will use hardcoded list"
-    );
-    channel.appendLine("HTTP Error: " + response.status);
-    return;
+    throw new Error(`Failed to get supported diagram types from ${url}`);
   }
 
-  data = await response.json();
-
-  supportedDiagramTypes = Object.keys(data.version).filter(
-    (key) => key !== "kroki"
+  const data = await response.json() as any;
+  const supportedDiagramTypes = Object.keys(data.version).filter(
+    (key) => key !== "kroki",
   );
-  channel.appendLine("Setting supported types to: " + supportedDiagramTypes);
   return supportedDiagramTypes;
 }
 
@@ -97,33 +94,3 @@ function encodeDiagram(source) {
     .replace(/\+/g, "-")
     .replace(/\//g, "_");
 }
-
-const staticSupportedDiagramTypes = [
-  "actdiag",
-  "blockdiag",
-  "bpmn",
-  "bytefield",
-  "c4plantuml",
-  "d2",
-  "dbml",
-  "diagramsnet",
-  "ditaa",
-  "erd",
-  "excalidraw",
-  "graphviz",
-  "mermaid",
-  "nomnoml",
-  "nwdiag",
-  "packetdiag",
-  "pikchr",
-  "plantuml",
-  "rackdiag",
-  "seqdiag",
-  "structurizr",
-  "svgbob",
-  "umlet",
-  "vega",
-  "vegalite",
-  "wavedrom",
-  "wireviz",
-];
