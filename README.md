@@ -46,3 +46,4 @@ Supported formats:
 - vega
 - vegalite
 - wavedrom
+- wireviz
