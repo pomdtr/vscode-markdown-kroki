@@ -46,9 +46,12 @@ export async function activate() {
         const token = tokens[idx];
 
         const diagramType = (() => {
-          var tokenName = token.info.toLowerCase();
-          if (tokenName.indexOf(diagramPrefix) == 0) {
-            return tokenName.slice(diagramPrefix.length);
+          var res = token.info.toLowerCase() as string;
+          res = res.trim();
+          res = res.split(" ")[0];
+
+          if (res.indexOf(diagramPrefix) == 0) {
+            return res.slice(diagramPrefix.length);
           } else {
             return ""; // Prefix not found, so not our token.
           }
