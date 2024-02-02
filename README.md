@@ -18,32 +18,4 @@ graph TD;
 ```
 ````
 
-Supported formats:
-
-- actdiag
-- blockdiag
-- bpmn
-- bytefield
-- c4plantuml
-- d2
-- dbml
-- diagramsnet
-- ditaa
-- erd
-- excalidraw
-- graphviz
-- mermaid
-- nomnoml
-- nwdiag
-- packetdiag
-- pikchr
-- plantuml
-- rackdiag
-- seqdiag
-- structurizr
-- svgbob
-- umlet
-- vega
-- vegalite
-- wavedrom
-- wireviz
+All supported formats are listed on the [Kroki website](https://kroki.io/#support).
