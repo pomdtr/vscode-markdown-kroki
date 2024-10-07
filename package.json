@@ -66,7 +66,11 @@
           "type": "string",
           "description": "The prefix to add in front of the diagram type name, eg \"kroki-\"",
           "default": ""
-        }
+        },
+        "markdown-kroki.allowSelfSignedHost": {
+          "type": "boolean",
+          "description": "Set to true when SSL cert for Kroki server is self-signed",
+          "default": false}
       }
     },
     "markdown.markdownItPlugins": true
