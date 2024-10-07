@@ -2,18 +2,21 @@ import pako from "pako";
 import { workspace } from "vscode";
 import * as vscode from "vscode";
 import fetch from "node-fetch";
+import { URL } from "url";
+import https from "https";
 
 const config = workspace.getConfiguration("markdown-kroki");
 
 export async function activate() {
   let channel = vscode.window.createOutputChannel("markdown-kroki");
 
-  let url = config.get<string>("url", "https://kroki.io");
+  let url = new URL(config.get<string>("url", "https://kroki.io"));
+  let allowSelfSignedHost = config.get<boolean>("allowSelfSignedHost", false);
 
   let supportedDiagramTypes: string[];
 
   try {
-    supportedDiagramTypes = await fetchDiagramTypes(url);
+    supportedDiagramTypes = await fetchDiagramTypes(url, allowSelfSignedHost);
   } catch (error) {
     channel.appendLine(`Failed to get supported diagram types from ${url}`);
     channel.appendLine(error.message);
@@ -24,9 +27,10 @@ export async function activate() {
   vscode.workspace.onDidChangeConfiguration(async (event) => {
     if (event.affectsConfiguration("markdown-kroki")) {
       // The setting has been changed, update it
-      url = config.get<string>("url", "https://kroki.io");
+      url = new URL(config.get<string>("url", "https://kroki.io"));
+      allowSelfSignedHost = config.get<boolean>("allowSelfSignedHost", false);
       try {
-        supportedDiagramTypes = await fetchDiagramTypes(url);
+        supportedDiagramTypes = await fetchDiagramTypes(url, allowSelfSignedHost);
       } catch (error) {
         channel.appendLine(
           `Failed to get supported diagram types from ${url}`,
@@ -75,9 +79,14 @@ export async function activate() {
 }
 
 async function fetchDiagramTypes(
-  url: string,
+  url: URL,
+  allowSelfSignedHost: boolean = false
 ): Promise<string[]> {
-  const response = await fetch(`${url}/v1/health`);
+  let sslConfiguredAgent = null;
+  const options = { rejectUnauthorized: allowSelfSignedHost ? true : false };
+
+  sslConfiguredAgent = new https.Agent(options);
+  const response = await fetch(`${url}/v1/health`, { agent: sslConfiguredAgent })
   if (!response.ok) {
     throw new Error(`Failed to get supported diagram types from ${url}`);
   }
